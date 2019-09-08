@@ -13,6 +13,10 @@ func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary
 	opts := &github.SearchOptions{
 		Sort:  "stars",
 		Order: "asc",
+		ListOptions: github.ListOptions{
+			Page:    1,
+			PerPage: 100,
+		},
 	}
 
 	repoDatas := []entity.RepositorySummary{}
@@ -25,15 +29,23 @@ func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary
 	for _, repo := range repositories {
 		fmt.Println(*repo.Name)
 		summary := entity.RepositorySummary{
-			Id:          *repo.ID,
-			FullName:    *repo.FullName,
-			Star:        *repo.StargazersCount,
-			Owner:       repo.Owner.GetName(),
-			Description: *repo.Description,
-			UpdatedAt:   repo.UpdatedAt.String(),
-			Language:    *repo.Language,
-			Size:        *repo.Size,
-			License:     repo.License.GetName(),
+			Id:            *repo.ID,
+			HTMLURL: *repo.HTMLURL,
+			FullName:      *repo.FullName,
+			Star:          *repo.StargazersCount,
+			ForksCount:    *repo.ForksCount,
+			WatchersCount: *repo.WatchersCount,
+			Owner:         entity.Owner{
+				Name: repo.Owner.GetName(),
+				AvatarUrl: repo.Owner.GetAvatarURL(),
+			},
+			Description:   *repo.Description,
+			Homepage:      repo.GetHomepage(),
+			Topics:        repo.Topics,
+			UpdatedAt:     repo.UpdatedAt.String(),
+			Language:      *repo.Language,
+			Size:          *repo.Size,
+			License:       repo.License.GetName(),
 		}
 		repoDatas = append(repoDatas, summary)
 	}
