@@ -6,10 +6,15 @@ import (
 
 	repository "../usecase"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func Run() {
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPost},
+	}))
 
 	e.GET("/list", func(c echo.Context) error {
 		ctx := context.Background()
