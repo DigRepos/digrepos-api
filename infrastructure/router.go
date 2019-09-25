@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	entity "../entity"
@@ -32,10 +33,19 @@ func Run() {
 		fmt.Println("query", c.QueryString())
 		ctx := context.Background()
 		filter := new(entity.Filter)
-		fmt.Println(c.QueryParams())
-		// TODO QueryParamsから構造体へのバインディングをやるレシーバ関数を
-		// Filter構造体に追加する
-		// filter.Keywords = c.QueryParam("keywords")
+		// クエリパラメータからfilter構造体へのバインド
+		keywordArr := []string{}
+		idx := 0
+		for {
+			w := c.QueryParam("keywords[" + strconv.Itoa(idx) + "]")
+			if w != "" {
+				keywordArr = append(keywordArr, w)
+			} else {
+				break
+			}
+			idx++
+		}
+		filter.Keywords = keywordArr
 		filter.Star = entity.Star{Low: c.QueryParam("star[low]"), High: c.QueryParam("star[high]")}
 		filter.Language = c.QueryParam("language")
 		filter.License = c.QueryParam("license")
