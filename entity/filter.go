@@ -22,12 +22,14 @@ func (f *Filter) BuildQuery() string {
 	if len(f.Keywords) > 0 {
 		queryArr = append(queryArr, strings.Join(f.Keywords, " "))
 	}
-	if queryTrim(f.Star.Low) != "" {
+	if queryTrim(f.Star.Low) != "" && queryTrim(f.Star.High) != "" {
+		queryArr = append(queryArr, "stars:"+f.Star.Low+".."+f.Star.High)
+	} else if queryTrim(f.Star.Low) != "" && queryTrim(f.Star.High) == "" {
 		queryArr = append(queryArr, "stars:>="+f.Star.Low)
-	}
-	if queryTrim(f.Star.High) != "" {
+	} else if queryTrim(f.Star.Low) == "" && queryTrim(f.Star.High) != "" {
 		queryArr = append(queryArr, "stars:<="+f.Star.High)
 	}
+
 	if queryTrim(f.Language) != "" {
 		queryArr = append(queryArr, "language="+f.Language)
 	}
