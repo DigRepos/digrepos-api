@@ -30,22 +30,22 @@ func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary
 		fmt.Println(*repo.Name)
 		summary := entity.RepositorySummary{
 			Id:            *repo.ID,
-			HTMLURL: *repo.HTMLURL,
+			HTMLURL:       *repo.HTMLURL,
 			FullName:      *repo.FullName,
 			Star:          *repo.StargazersCount,
 			ForksCount:    *repo.ForksCount,
 			WatchersCount: *repo.WatchersCount,
-			Owner:         entity.Owner{
-				Name: repo.Owner.GetName(),
+			Owner: entity.Owner{
+				Name:      repo.Owner.GetName(),
 				AvatarUrl: repo.Owner.GetAvatarURL(),
 			},
-			Description:   *repo.Description,
-			Homepage:      repo.GetHomepage(),
-			Topics:        repo.Topics,
-			UpdatedAt:     repo.UpdatedAt.String(),
-			Language:      *repo.Language,
-			Size:          *repo.Size,
-			License:       repo.License.GetName(),
+			Description: *repo.Description,
+			Homepage:    repo.GetHomepage(),
+			Topics:      repo.Topics,
+			UpdatedAt:   repo.UpdatedAt.String(),
+			Language:    repo.GetLanguage(),
+			Size:        *repo.Size,
+			License:     repo.License.GetName(),
 		}
 		repoDatas = append(repoDatas, summary)
 	}
