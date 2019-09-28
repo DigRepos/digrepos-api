@@ -31,10 +31,10 @@ func (f *Filter) BuildQuery() string {
 	}
 
 	if queryTrim(f.Language) != "" {
-		queryArr = append(queryArr, "language="+f.Language)
+		queryArr = append(queryArr, "language:"+f.Language)
 	}
 	if queryTrim(f.License) != "" {
-		queryArr = append(queryArr, "license="+f.License)
+		queryArr = append(queryArr, "license:"+f.License)
 	}
 	fmt.Println("[Filter] BuildQuery", strings.Join(queryArr, " "))
 

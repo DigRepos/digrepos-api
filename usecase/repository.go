@@ -39,12 +39,12 @@ func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary
 				Name:      repo.Owner.GetName(),
 				AvatarUrl: repo.Owner.GetAvatarURL(),
 			},
-			Description: *repo.Description,
+			Description: repo.GetDescription(),
 			Homepage:    repo.GetHomepage(),
 			Topics:      repo.Topics,
 			UpdatedAt:   repo.UpdatedAt.String(),
 			Language:    repo.GetLanguage(),
-			Size:        *repo.Size,
+			Size:        repo.GetSize(),
 			License:     repo.License.GetName(),
 		}
 		repoDatas = append(repoDatas, summary)
