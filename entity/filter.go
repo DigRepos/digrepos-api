@@ -19,9 +19,11 @@ type Filter struct {
 
 func (f *Filter) BuildQuery() string {
 	queryArr := []string{}
-	if len(f.Keywords) > 0 {
-		queryArr = append(queryArr, strings.Join(f.Keywords, " "))
+	tmpKeywords := []string{}
+	for _, k := range f.Keywords {
+		tmpKeywords = append(tmpKeywords, k+" in:name,description,readme")
 	}
+	queryArr = append(queryArr, strings.Join(tmpKeywords, " "))
 	if queryTrim(f.Star.Low) != "" && queryTrim(f.Star.High) != "" {
 		queryArr = append(queryArr, "stars:"+f.Star.Low+".."+f.Star.High)
 	} else if queryTrim(f.Star.Low) != "" && queryTrim(f.Star.High) == "" {
