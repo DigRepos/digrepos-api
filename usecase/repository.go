@@ -9,13 +9,14 @@ import (
 )
 
 func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary, error) {
+	fmt.Println(query)
 	client := github.NewClient(nil)
 	opts := &github.SearchOptions{
 		Sort:  "stars",
-		Order: "asc",
+		Order: "desc",
 		ListOptions: github.ListOptions{
 			Page:    1,
-			PerPage: 100,
+			PerPage: 300,
 		},
 	}
 
@@ -29,12 +30,12 @@ func Repositories(ctx context.Context, query string) ([]entity.RepositorySummary
 	for _, repo := range repositories {
 		fmt.Println(*repo.Name)
 		summary := entity.RepositorySummary{
-			Id:            *repo.ID,
-			HTMLURL:       *repo.HTMLURL,
-			FullName:      *repo.FullName,
-			Star:          *repo.StargazersCount,
-			ForksCount:    *repo.ForksCount,
-			WatchersCount: *repo.WatchersCount,
+			Id:            repo.GetID(),
+			HTMLURL:       repo.GetHTMLURL(),
+			FullName:      repo.GetFullName(),
+			Star:          repo.GetStargazersCount(),
+			ForksCount:    repo.GetForksCount(),
+			WatchersCount: repo.GetWatchersCount(),
 			Owner: entity.Owner{
 				Name:      repo.Owner.GetName(),
 				AvatarUrl: repo.Owner.GetAvatarURL(),
