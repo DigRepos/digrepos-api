@@ -21,7 +21,7 @@ func (f *Filter) BuildQuery() string {
 	queryArr := []string{}
 	tmpKeywords := []string{}
 	for _, k := range f.Keywords {
-		tmpKeywords = append(tmpKeywords, k+" in:name,description,readme")
+		tmpKeywords = append(tmpKeywords, k+" in:name,description")
 	}
 	queryArr = append(queryArr, strings.Join(tmpKeywords, " "))
 	if queryTrim(f.Star.Low) != "" && queryTrim(f.Star.High) != "" {
